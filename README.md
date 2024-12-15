@@ -34,7 +34,7 @@ Este proyecto se centra en el análisis y la predicción de datos utilizando dif
    - Comparación de los resultados con las técnicas anteriores y discusión sobre las mejoras obtenidas.
 
 ### Extra
-- **Summarizer**: Implementación de un summarizer para reducir la longitud de los textos de la variable `description`. Explicación de la librería utilizada (NLTK, Gensim, etc.) y resultados obtenidos.
+- **Summarizer**: Implementación de un summarizer para reducir la longitud de los textos de la variable `description`. 
 - **Clustering de diferentes variables**: Uso de un algoritmo k-means para agrupar diferentes variables. Análisis de los clusters resultantes y la relevancia de estos para el problema de estudio.
 
 ## Instrucciones de Instalación
