@@ -9,7 +9,7 @@
 ## Descripción General
 Este proyecto se centra en el análisis y la predicción de datos utilizando diferentes métodos de representación vectorial y técnicas de modelado para problemas de regresión. Se implementaron diversas técnicas, desde el preprocesamiento de textos hasta el uso de modelos transformer para la predicción de resultados.
 
-### Metodología Utilizada
+### Metodología Utilizada Resumida
 1. **Análisis de variables de entrada**
    - Visualización a través de histogramas de la relación entre la variable `rating` y las categorías en la variable `categories`. Se ha tenido en cuenta el numero de repeticiones de categorias para despreciar las que menos apariciones tiene. Como categorias más influyentes tenemos bon_appetit y las diferentes categorias de intolerancias o minorias gastronómicas. 
    - Estos resultados tienen un sentido, en primer lugar que bon_appetit significa buen provecho en frances, lo que augura que el plato con dicha categoría tiene un buen gusto. En segundo lugar, las personas con alergias, intolerancias o que pertenecen a minorías gastronómicas valoran mejor aquellos platos que están hechos a su medida.  
@@ -42,7 +42,9 @@ Este proyecto se centra en el análisis y la predicción de datos utilizando dif
 
   Los resultados son muy favorables, ya que tenemos los textos resumidos en gran medida y sin perder una gran cantidad de información. Aunque sí es verdad que hay pequeños datos que se pierden como la temperatura en algunos casos. 
 - **Clustering de diferentes variables**: Uso de un algoritmo k-means para agrupar diferentes variables. Análisis de los clusters resultantes y la relevancia de estos para el problema de estudio.
-- 
+
+# Explicación del trabajo
+
 ## Preparación de datos e importación de bibliotecas
 
 El primer paso de nuestro proyecto es la importación de todas las librerías necesarias así como la descarga del dataset del fichero `full_format_recipes.json`. Para llevar a cabo el análisis y la implementación del proyecto, se utilizarán diversas librerías de Python, cada una con un rol específico en el proceso. Desde las herramientas para el preprocesamiento de texto como NLTK y SpaCy, hasta las librerías de modelado y representación vectorial como Gensim, PyTorch y Hugging Face.
@@ -188,7 +190,6 @@ Cabe destacar que la función es válida para las diferentes vectorizaciones de 
 
 De las gráficas podemos sacar diferentes conclusiones:
 
-
 1. La vectorización BERT es la que mejor ha funcionado de todas, en igualdad de parámetros, sin embargo, los resultados están lejos de ser concluyentes.
 2. El extracto del dataset utilizado es quizá demasiado pequeño para la tarea, sin embargo al utilizar un extracto más grande, se hace muy largo, temporalmente hablando.
 3. Podemos observar como las perdidas y la R^2 de los dos conjuntos están considerablemente cerca, esto es una buena señal, sin embargo el valor final de estas métricas simboliza que no se está haciendo una buena tarea de regresión.
@@ -279,3 +280,10 @@ Primero tomamos un número pequeño de recetas para poder manejar bien el resumi
 
 Definimos las funciones para dividir y resumir los textos. Y por último lo inicializamos.
 
+![Summarizer](GH/Summarizer.png)
+
+Ahora que tenemos textos resumidos, tiene mucho sentido volver a realizar las tareas de regresión, ya que podemos utilizar un mayor número de recetas, al ser la variable directions menos extensa, permitiendo extraer la información más relevante de dicha columna, reduciendo la complejidad y el ruido en los datos
+
+Esto facilita que los modelos de regresión, como Random Forest o redes neuronales, puedan capturar patrones clave sin verse afectados por detalles irrelevantes o redundantes. Al simplificar la representación textual, también se optimizan los recursos computacionales necesarios para vectorizar y procesar los datos.
+
+Además, los resúmenes hacen que las relaciones entre las variables textuales y la variable objetivo, como *ratings*, sean más claras y manejables. Esto no solo mejora el desempeño del modelo, sino que también aumenta la interpretabilidad de los resultados, permitiendo obtener conclusiones más precisas sobre cómo los textos afectan las predicciones.
