@@ -1,6 +1,6 @@
 # Proyecto-Tratamiento-de-Datos-AMJ-y-JMIG
 
-# Nombre del Proyecto: **Análisis de Textos y Regresión con Modelos Transformer**
+# **Análisis de Textos y Regresión con Modelos Transformer**
 
 ## Autor
 - **Alejandro Mesquida Jiménez, 100429586**
