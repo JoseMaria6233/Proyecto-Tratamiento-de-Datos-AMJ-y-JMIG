@@ -53,13 +53,13 @@ Una vez descargado el dataset, podemos observar como contamos con cerca de 20,00
 
 En primer lugar, decidimos obtener un contador de cuantas veces aparecía cada categoría, para así poder tener esto en cuenta a la hora de analizar los datos. El análisis que decidimos llevar a cabo fue como la media de la variable 'rating' variaba en función de la categoría de la receta, pudiendo así observar que categorías son puntuadas mejor que otras. Ordenando las categorías que obtenían una mejor puntuación, obtenemos los siguientes resultados:
 
-
+![top rating por categoría sin filtrar](GH/td1.png)
 
 Sin embargo, si nos fijamos en algunas de las categorías que obtienen mejor puntuación, podemos darnos cuenta de que aparecen muy pocas veces. Por ejemplo, las categorías 'Mortar and Pestle' y '#Wastless' aparecen 2 y 1 veces respectivamente, por lo que estos datos no son muy representativos del dataset completo. Por ello, como hemos comprobado anteriormente que algunas de las categorías tienen miles de apariciones en el dataset, vamos a escoger un límite de 500 apariciones, y representar la media de los ratings solo para categorías que aparezcan más de 500 veces en el dataset.
 
 De esta forma, obtenemos datos mucho más representativos de nuestro dataset. Por ejemplo, si observamos ahora el rating promedio de la categoría 'Bon Appétit', la cual es la que más se repite de todo el dataset, podemos observar como tiene un rating promedio de 3.893038, situándola como la categoría número 29 con mejor rating. Si ahora representamos las 20 mejores y 20 peores categorías que aparecen más de 500 veces, obtenemos los siguientes resultados:
 
-
+![top rating por categoría](GH/td2.png)
 
 De las categorías más positivas podemos destacar las categorías Cake, Thanksgiving, Christmas, Low Cal, Shrimp, Roast, Grill/Barbecue, Sauté, Beef, Pork, Marinate, Mixer, y Backyard BBQ.
 
@@ -69,7 +69,7 @@ Por otro lado, las categorías relacionadas con técnicas de cocción como Roast
 
 Además, las categorías Low Cal y High Fiber están ganando popularidad entre aquellos que buscan opciones más saludables y equilibradas, lo que también contribuye a ratings positivos. Las personas que siguen dietas controladas en calorías o ricas en fibra suelen valorar positivamente recetas que ofrecen beneficios para la salud sin sacrificar el sabor.
 
-
+![peores rating por categoría](GH/td3.png)
 
 De las categorías más negativas podemos destacar las categorías Mint, Lemon, Lime, Orange, No-Cook, Sauce, Breakfast, Kid-Friendly, Party, Cocktail Party, Drink, Alcoholic y Party.
 
@@ -111,11 +111,11 @@ TF-IDF (Term Frequency-Inverse Document Frequency) genera una representación ba
 
 Para ello, en primer lugar, definimos nuestro diccionario, que contendrá todos los tokens que aparecen en nuestro corpus. Dado que en este caso estamos trabajando aún con las 20,000 recetas, obtenemos un diccionario de 9,159 tokens, y una vez que hemos definido nuestro diccionario, podemos generar nuestra representación BOW de las recetas, que no es más que contar la frecuencia con la que cada palabra aparece en una receta. Como se puede observar, los vectores contienen el identificador númerico de cada palabra con su respectiva frecuencia de aparcición en el documento.
 
-
+![BOW](GH/td4.png)
 
 Una vez generada nuestra representación BOW, pasamos a generar la representación TF-IDF mediante la función de la librería Gensim. De esta forma, obtenemos vectores que contienen el identificador númerico de cada palabra con su respectivo valor TF-IDF, que se basa en el peso de las palabras en los documentos, considerando su frecuencia relativa en el corpus.
 
-
+![TF-IDF](GH/td5.png)
 
 Sin embargo, estos vectores tienen una longitud distinta en función del número de tokens de cada documento. Por ello, para que posteriormente nuestras redes neuronales tengan una entrada de tamaño constante, generamos el vector TF-IDF denso, que rellena con valor 0 para el resto de palabras que no aparecen en ese documento. De esta forma, conseguimos que todos los vectores TF-IDF tengan una longitud igual a la longitud del diccionario (en este caso, 9,159).
 
@@ -127,15 +127,13 @@ Una vez que el modelo está entrenado, se puede acceder a él a través del atri
 
 Dado que hemos representado nuestras palabras como vectores numéricos, podemos utilizar la similitud coseno entre dos vectores de palabras para medir la similitud lingüística o semántica de las palabras correspondientes. Para ello, Gensim proporciona la función `most_similar`, que devuelve las palabras más similares a una palabra dada. Como se puede apreciar, la palabra 'pepper' parece estar muy relacionada con otras especias, mientras que la palabra 'cheese' con quesos distintos, por lo que parece que word2vec consigue vectores que se parecerán más con palabras relacionadas entre si.
 
-
-
+![Similitud pepper y cheese word2vec](GH/td6.png)
 
 También podemos verificar el rendimiento de nuestro modelo visualizando los embeddings. Sin embargo, aunque los embeddings son vectores de baja dimensionalidad, incluso 4 dimensiones son demasiadas para visualizar. t-SNE (*t-distributed Stochastic Neighbor Embedding*) resuelve este problema, ya que permite visualizar datos de alta dimensionalidad reduciéndolos a datos de dos o tres dimensiones. Esta técnica toma los embeddings (o cualquier conjunto de datos) y busca preservar, tanto como sea posible, en 2 (o 3) dimensiones las distancias del espacio original de la dimensión del embedding. Por lo tanto, esto nos ayuda a tener una idea del espacio de los embeddings de palabras.
 
 Sklearn incluye una implementación de t-SNE que podemos usar fácilmente. Sin embargo, pasar de una representación en 200 dimensiones a una de 2 es muy complicado por lo que la figura tampoco será muy representativa en genera. A pesar de ello, podemos centrarnos en puntos especificos de la representación y analizar como, efectivamente, palabras que deberían estar relacionadas entre si aparecen juntas.
 
-
-
+![t-SNE word2vec](GH/td7.png)
 
 Si nos centramos en la zona (-20 , 40), vemos como muchos números, que parecen ser las enumeraciones de los pasos de la receta estan muy próximos entre si. Por otro lado, aunque tampoco se puede apreciar muy claramente, en la zona (-20 , 0) aparecen muchas palabras relacioandas con salsas, especias o condimentos que podrían ser necesarios en la receta. Sin embargo, en la mayor parte de la representación, es dificil apreciar bien las características de las palabras.
 
@@ -153,9 +151,7 @@ Ahora, podemos pasar todos nuestros tensores al modelo para obtener la represent
 
 Finalmente, se consigue un tensor de tamaño 2000x512x768. 2000 representa el número de documentos en el corpus, 512 el número de tokens en cada documento, y 768 es el tamaño del vector que representa cada token de cada documento. Como se puede observar, esto resultó en un tensor extremadamente grande, pesando alrededor de 3 Gigas.
 
-Para poder analizar los vectores generados por BERT, decidimos calcular la distancia coseno entre las palabras '30' y 'tomato' y las palabras '30' y 'minutes', que aparecen en la primera receta del corpus. De esta forma, podemos ver como los vectores de la segunda tupla de palabras son mucho más parecidos que los de la primera, lo que quiere decir que palabras relacionadas entre ellas tienen embeddings que se parecen más entre si.
-
-
+Para poder analizar los vectores generados por BERT, decidimos calcular la distancia coseno entre las palabras '30' y 'tomato' y las palabras '30' y 'minutes', que aparecen en la primera receta del corpus. De esta forma, podemos ver como los vectores de la segunda tupla de palabras son mucho más parecidos (distancia coseno = 0.62) que los de la primera (distancia coseno = 0.19), lo que quiere decir que palabras relacionadas entre ellas tienen embeddings que se parecen más entre si.
 
 Por último, los vectores obtenido para el token inicial de cada receta [CLS], sirven como representación de la receta completa. De esta forma, dado que trabajar con una matriz de 2000x768 es mucho más sencillo que trabajar con una de 2000x512x768, optamos por trabajar en los siguientes pasos con los vectores que representan a las recetas completas, y no a los que representan individualmente a cada token de cada receta. De esta forma coginedo solo el vector para el token [CLS] de cada receta, podemos utilizar redes neuronales y regresores con entradas de longitud 768 para cada documento, en lugar de entradas de 512x768 para cada documento.
 
@@ -173,9 +169,13 @@ En primer lugar, no dimos cuenta de que el modelo causaba errores en la ejecuci�
 
 Para entrenar el modelo, dividimos el conjunto de datos de 2,000 recetas en dos partes: un 80% para el conjunto de entrenamiento y un 20% para el conjunto de prueba. Finalmente, re-entrenamos el modelo, obteneindo las mismas métricas que en el apartado anterior. Sin embargo, durante el entrenamiento, no conseguimos obtener los resultados de $R^2$, RMSE y MAE para el conjunto de entrenamiento, por lo que no pudimos generar gráficas iguales a las del punto 4, si no, unicamante para el conjunto de test.
 
+![MSE hugging face](GH/td8.png)
 
+![RMSE hugging face](GH/td10.png)
 
+![R2 hugging face](GH/td11.png)
 
+![MAE hugging face](GH/td12.png)
 
 De las gráficas podemos sacar diferentes conclusiones:
 
@@ -188,7 +188,7 @@ Por último, si ahora imprimimos los valores del rating predicho por la red y lo
 
 Por otro lado, también vemos como es muy dificil que el modelo acierte el rating con exactitud, aunque suele tener un error menor del 0.5 en la mayoría de casos. Esto podría deberse a que los textos son complejos y es dificil intuir el rating a partir de ellos. Además, al ser un problema de regresión, el modelo aprende a dar cualquier valor entre el 0 y el 5, mientras que las etiquetas reales son valores bastante redondos. Por este motivo, se podría incluso haber modificado el modelo para, en vez de trabajar como regresor, trabajar como clasificador ajustando el número de salidas posibles de la red (por ejemplo: si los ratings solo pueden ser valores múltiplos de 0.5, habrá 10 posibles salidas).
 
-
+![predicciones rating hugging face](GH/td13.png)
 
 ## Extensión
 
@@ -198,7 +198,7 @@ En primer lugar, decidimos probar si tendría sentido aplicar el algoritmo de K-
 
 Para ello, dado que el diccionario de los 20,000 documentos está compuesto de 9159 tokens distintos, se optó por utilizar un total de 100 clusters. Después, se ajusta el modelo de k-means a los vectores de word2vec para obtener estos 100 clusters y finalmente se representan en dos dimensiones utilizando t-SNE.
 
-
+![t-SNE K-Means](GH/td14.png)
 
 Como se puede observar, la representación t-SNE no es muy representativa por varios motivos. En primer lugar, pasar de 200 dimensiones a 2 es complicado, como ya se mencionó en el apartado 3.2, y por ello, se pueden sacar pocas concusiones de esta figura. Por otro lado, al al contar con 100 clusters distintos y no haber suficientes colores a la hora de hacer el plot, muchos colores se repiten, dificultando ver los distintos clusters con claridad.
 
@@ -216,6 +216,6 @@ De esta forma, podemos ver como muchos de los clusters si que juntan palabras co
 
 Por otro lado, dado que el número de clusters se eligió a partir de ir probando variando el número, se trató de obtener el K óptimo como hicimos en clase. Para ello, definimos un rango de 2 a 200 clusters y buscamos el valor óptimo de K a partir del método del codo. Sin embargo, como se aprecia en las figuras, mientras que el Silhouette Score si que obtiene un máximo para K=2, no conseguimos obtener un Elbow óptimo, ya que el valor de Elbow sigue bajando al aumentar el número de clusters. Dado que que este código tardaba mucho tiempo de ejecución y que el valor de K=2 no iba a mostrar datos representativos, se optó por dejar el número de clusters a 100, y no tener en cuenta los resultados obtenidos aquí.
 
-
+![Elbow](GH/td15.png)
 
 Dado que los resultados obtenidos no fueron lo suficientemente representativos, se optó por no realizar más pruebas con el algoritmo K-means, a pesar de que otra de nuestras ideas fuera aplicar K-means a los embeddings obtenidos con BERT y así poder ver que recetas se parecen más entre ellas y tratar de analiazar por qué.
