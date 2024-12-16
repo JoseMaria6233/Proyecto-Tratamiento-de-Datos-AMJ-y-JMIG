@@ -164,3 +164,58 @@ Por último, los vectores obtenido para el token inicial de cada receta [CLS], s
 ### Redes Neuronales
 
 ### Otra técnica implementada en la librería Scikit-learn - RandomForest
+
+## Comparación de lo obtenido en el paso 4 con el fine-tuning de un modelo preentrenado con Hugging Face
+
+A diferencia de en el paso 3, cuando sacabamos los embeddings de BERT, en este caso si que queremos entrenar un modelo ya existente. En nuestro caso, decidimos realizar el fine-tunning sobre el modelo BertForSequenceClassification, al cual le modificamos la capa de salida para que tenga una única salida y funcione como regresor.
+
+En primer lugar, no dimos cuenta de que el modelo causaba errores en la ejecución porque había algunas recetas cuyo 'rating' era NaN, y dado que en los pasos anteriores habíamos trabajado con las primeras 2000 recetas, decidimos sustituir los ratings NaN por la media de los ratings del resto de recetas, y así poder seguir trabajando con las mismas 2,000 recetas. Dado que esto solo ocurría en 2 de las 2000 recetas, tampoco suponía un cambio brusco en los resultados.
+
+Para entrenar el modelo, dividimos el conjunto de datos de 2,000 recetas en dos partes: un 80% para el conjunto de entrenamiento y un 20% para el conjunto de prueba. Finalmente, re-entrenamos el modelo, obteneindo las mismas métricas que en el apartado anterior. Sin embargo, durante el entrenamiento, no conseguimos obtener los resultados de $R^2$, RMSE y MAE para el conjunto de entrenamiento, por lo que no pudimos generar gráficas iguales a las del punto 4, si no, unicamante para el conjunto de test.
+
+
+
+
+
+De las gráficas podemos sacar diferentes conclusiones:
+
+1.   Las pérdidas MSE, RMSE y MAE deberían de decrecer con el número de épocas, y así ocurre, de forma que el modelo se entrena correctamente. Por otro lado, la $R^2$ debería de tender a 0 y esto también ocurre.
+2.   Como se mencionó anteriormente para las redes neuronales, es probable que aumentando el tamaño del dataset, los resulatdos mejorarían, pero esto era computacionalmente muy costoso, por lo que podría ser un aspecto a mejorar si tuvieramos ordenadores más potentes.
+3.   Podemos observar como las perdidas y la $R^2$ continuan teniendo oscilaciones y no terminan de converger durante el entrenamiento, por lo que entrenar durante un mayor número de épocas o modificando el learning rate podría ser beneficioso. Sin embargo, de nuevo, esto supondríatener un modelo que tardase aún más en ser entrenado, que en nuestro caso, al no contar con tiempo ilimitado con las GPUs que proporciona Google Colab de forma gratuita, no era posible.
+4. Los valores, aunque lejos de ser los óptimos sí que entran dentro de márgenes aceptables, ya que conseguimos valores para las pérdidas cercanos a 0. Por ello, al introducir nuevas recetas, el modelo debería de ser capaz de acercarse al rating real con su predicción.
+
+Por último, si ahora imprimimos los valores del rating predicho por la red y los comparamos con los ratings reales, vemos como dado que la mayoría de las etiquetas reales están entre 3.5 y 4.5, el modelo suele predecir valores en este intervalo. Sin embargo, también vemos que esto no siempre es así, ya que, para una de las recetas, la predicción ha sido 1.009 mientras que la etiqueta real: 3.750. De esta forma vemos como el modelo no parece estar demasiado sobreajustado a predecir valores entre el 3.5 y el 4.5.
+
+Por otro lado, también vemos como es muy dificil que el modelo acierte el rating con exactitud, aunque suele tener un error menor del 0.5 en la mayoría de casos. Esto podría deberse a que los textos son complejos y es dificil intuir el rating a partir de ellos. Además, al ser un problema de regresión, el modelo aprende a dar cualquier valor entre el 0 y el 5, mientras que las etiquetas reales son valores bastante redondos. Por este motivo, se podría incluso haber modificado el modelo para, en vez de trabajar como regresor, trabajar como clasificador ajustando el número de salidas posibles de la red (por ejemplo: si los ratings solo pueden ser valores múltiplos de 0.5, habrá 10 posibles salidas).
+
+
+
+## Extensión
+
+### K-means
+
+En primer lugar, decidimos probar si tendría sentido aplicar el algoritmo de K-means sobre las representaciones vectoriales obtenidas en el apartado 3. Para ello, ya que obtuvimos una representación en 2 dimensiones de cada palabra al usar t-SNE sobre la vectorización word2vec, decidimos probar si el algoritmo K-means sería capaz de encontrar parecidos entre las palabras a partir de vectores de alta dimensión (en este caso de 200 dimensiones).
+
+Para ello, dado que el diccionario de los 20,000 documentos está compuesto de 9159 tokens distintos, se optó por utilizar un total de 100 clusters. Después, se ajusta el modelo de k-means a los vectores de word2vec para obtener estos 100 clusters y finalmente se representan en dos dimensiones utilizando t-SNE.
+
+
+
+Como se puede observar, la representación t-SNE no es muy representativa por varios motivos. En primer lugar, pasar de 200 dimensiones a 2 es complicado, como ya se mencionó en el apartado 3.2, y por ello, se pueden sacar pocas concusiones de esta figura. Por otro lado, al al contar con 100 clusters distintos y no haber suficientes colores a la hora de hacer el plot, muchos colores se repiten, dificultando ver los distintos clusters con claridad.
+
+Sin embargo, podemos sacar algo de información de los clusters a partir de los propios tokens que hay en cada cluster. Las palabras en cada uno de los 100 clusters se pueden observar en la ejecución del notebook, pero no han sido copiadas en este documento. En primer lugar, se puede observar como el número de tokens en cada cluster es distinto, lo que significa que hay grupos de muchas palabras con parecidos entre si otras palabras cuyos vectores no se parecen con ninguna otra palabra.
+
+Centrandonos en clusters en concreto podemos observar:
+
+1. Cluster 36: ['juice', 'lemon', 'peel', 'orange', 'lime']. Todas las palabras de este cluster están relacionadas con con cítricos y productos derivados de ellos, particularmente jugos y frutas.
+
+2. Cluster 39: ['onion', 'garlic', 'vegetable', 'carrot', 'mushroom']. Estos términos definen claramente ingredientes vegetales comunes, especialmente aquellos que se utilizan frecuentemente en muchas recetas.
+
+3. Cluster 98: ['tomato', 'leaf', 'green', 'parsley', 'chop', 'thyme', 'chile', 'cilantro', 'scallion', 'celery', 'red', 'fennel', 'bell', 'bay']. Este cluster está compuesto principalmente por ingredientes frescos, hierbas y especias que se utilizan en la cocina para añadir frescura, sabor y aroma a los platos.
+
+De esta forma, podemos ver como muchos de los clusters si que juntan palabras con parecidos entre si, a pesar de que algunos de los clusters no sean muy representativos de ninguna temática.
+
+Por otro lado, dado que el número de clusters se eligió a partir de ir probando variando el número, se trató de obtener el K óptimo como hicimos en clase. Para ello, definimos un rango de 2 a 200 clusters y buscamos el valor óptimo de K a partir del método del codo. Sin embargo, como se aprecia en las figuras, mientras que el Silhouette Score si que obtiene un máximo para K=2, no conseguimos obtener un Elbow óptimo, ya que el valor de Elbow sigue bajando al aumentar el número de clusters. Dado que que este código tardaba mucho tiempo de ejecución y que el valor de K=2 no iba a mostrar datos representativos, se optó por dejar el número de clusters a 100, y no tener en cuenta los resultados obtenidos aquí.
+
+
+
+Dado que los resultados obtenidos no fueron lo suficientemente representativos, se optó por no realizar más pruebas con el algoritmo K-means, a pesar de que otra de nuestras ideas fuera aplicar K-means a los embeddings obtenidos con BERT y así poder ver que recetas se parecen más entre ellas y tratar de analiazar por qué.
