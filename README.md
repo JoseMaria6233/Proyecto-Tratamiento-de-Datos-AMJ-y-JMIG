@@ -2,7 +2,7 @@
 
 # **Análisis de Textos y Regresión con Modelos Transformer**
 
-## Autor
+## Autores
 - **Alejandro Mesquida Jiménez, 100429586**
 - **José María Iranzo González, 100406233**
 
