@@ -270,3 +270,12 @@ Por otro lado, dado que el número de clusters se eligió a partir de ir proband
 ![Elbow](GH/td15.png)
 
 Dado que los resultados obtenidos no fueron lo suficientemente representativos, se optó por no realizar más pruebas con el algoritmo K-means, a pesar de que otra de nuestras ideas fuera aplicar K-means a los embeddings obtenidos con BERT y así poder ver que recetas se parecen más entre ellas y tratar de analiazar por qué.
+
+### Summarizer
+
+Como en el enunciado se nos indica, hemos decidido tambien extendernos haciendo un resumidor en español, *summarizer*, que nos permita reducir las extensiones de las variables textuales. En este caso y como se nos indica, lo hemos realizado para la variable `directions`.
+
+Primero tomamos un número pequeño de recetas para poder manejar bien el resumidor. Concatenamos los pasos y limitamos su longitud para evitar problemas con la RAM.
+
+Definimos las funciones para dividir y resumir los textos. Y por último lo inicializamos.
+
