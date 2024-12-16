@@ -176,18 +176,22 @@ En penúltimo lugar, hemos decidido definir diferentes funciones para visualizar
 
 Y por último, para inicializar el modelo basado en la red neuronal, y utilizando la vectorización que mejor consideremos (preguntada al usuario) se procede a la tarea de regresión. Imprimimos las variables cada 50 épocas y las representaciones gráficas.
 
-![NN](GH/td7.png)
-![NNLoss](GH/td7.png)
-![NNR2](GH/td7.png)
+![NNetpas](GH/NNetpas.png)
+
+
+![NNLoss](GH/NNLoss.png)
+
+
+![NNR2](GH/NNR2.png)
 
 Cabe destacar que la función es válida para las diferentes vectorizaciones de texto, de forma que queda un código más depurado y limpio.
 
 De las gráficas podemos sacar diferentes conclusiones:
 
 
-1.   La vectorización BERT es la que mejor ha funcionado de todas, en igualdad de parámetros, sin embargo, los resultados están lejos de ser concluyentes.
-2.   El extracto del dataset utilizado es quizá demasiado pequeño para la tarea, sin embargo al utilizar un extracto más grande, se hace muy largo, temporalmente hablando.
-3. Podemos observar como las perdidas y la $R^2$ de los dos conjuntos están considerablemente cerca, esto es una buena señal, sin embargo el valor final de estas métricas simboliza que no se está haciendo una buena tarea de regresión.
+1. La vectorización BERT es la que mejor ha funcionado de todas, en igualdad de parámetros, sin embargo, los resultados están lejos de ser concluyentes.
+2. El extracto del dataset utilizado es quizá demasiado pequeño para la tarea, sin embargo al utilizar un extracto más grande, se hace muy largo, temporalmente hablando.
+3. Podemos observar como las perdidas y la R^2 de los dos conjuntos están considerablemente cerca, esto es una buena señal, sin embargo el valor final de estas métricas simboliza que no se está haciendo una buena tarea de regresión.
 4. Los valores, aunque lejos de ser los óptimos sí que entran dentro de márgenes aceptables.
 
 ### Otra técnica implementada en la librería Scikit-learn - RandomForest
@@ -200,7 +204,7 @@ Después de ello, se ha decidido por implementar una función que sirva para opt
 
 A diferencia del caso de la red neuronal, el modelo de vectorización lo pasamos por parámetros.
 
-![RF](GH/td7.png)
+![RF](GH/RF.png)
 
 Tal y como podemos observar, los mejores resultados se obtienen para el modelo de BERT, en comparación con TF-IDF y Word2Vec. También observamos que al igual que con la red neuronal, los resultados son aceptables pero están muy lejos de ser los óptimos.
 
