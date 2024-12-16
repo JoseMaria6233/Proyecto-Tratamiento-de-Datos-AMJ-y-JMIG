@@ -34,5 +34,11 @@ Este proyecto se centra en el análisis y la predicción de datos utilizando dif
    - Comparación de los resultados con las técnicas anteriores y discusión sobre las mejoras obtenidas.
 
 ### Extra
-- **Summarizer**: Implementación de un summarizer para reducir la longitud de los textos de la variable `description`. Hemos tomado una porción pequeña del dataset para poder demostrar su uso. 
+- **Summarizer**: Como en el enunciado se nos indica, hemos decidido tambien extendernos haciendo un resumidor en español, *summarizer*, que nos permita reducir las extensiones de las variables textuales. En este caso y como se nos indica, lo hemos realizado para la variable `directions`. 
+
+  Primero tomamos un número pequeño de recetas para poder manejar bien el resumidor. Concatenamos los pasos y limitamos su longitud para evitar problemas con la RAM.
+
+  Definimos las funciones para dividir y resumir los textos. Y por último lo inicializamos.
+
+  Los resultados son muy favorables, ya que tenemos los textos resumidos en gran medida y sin perder una gran cantidad de información. Aunque sí es verdad que hay pequeños datos que se pierden como la temperatura en algunos casos. 
 - **Clustering de diferentes variables**: Uso de un algoritmo k-means para agrupar diferentes variables. Análisis de los clusters resultantes y la relevancia de estos para el problema de estudio.
