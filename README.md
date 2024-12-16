@@ -3,7 +3,7 @@
 # Nombre del Proyecto: **Análisis de Textos y Regresión con Modelos Transformer**
 
 ## Autor
-- **Alejandro Mesquida Jiménez, 1004**
+- **Alejandro Mesquida Jiménez, 100429586**
 - **José María Iranzo González, 100406233**
 
 ## Descripción General
@@ -11,8 +11,8 @@ Este proyecto se centra en el análisis y la predicción de datos utilizando dif
 
 ### Metodología Utilizada
 1. **Análisis de variables de entrada**
-   - Visualización de la relación entre las variables de salida y las categorías en la variable `categories`. Se utilizaron diagramas de dispersión y gráficos de correlación para identificar las relaciones más significativas.
-   - Discusión sobre la relevancia de estas relaciones para el problema de estudio y su impacto en la predicción.
+   - Visualización a través de histogramas de la relación entre la variable `rating` y las categorías en la variable `categories`. Se ha tenido en cuenta el numero de repeticiones de categorias para despreciar las que menos apariciones tiene. Como categorias más influyentes tenemos bon_appetit y las diferentes categorias de intolerancias o minorias gastronómicas. 
+   - Estos resultados tienen un sentido, en primer lugar que bon_appetit significa buen provecho en frances, lo que augura que el plato con dicha categoría tiene un buen gusto. En segundo lugar, las personas con alergias, intolerancias o que pertenecen a minorías gastronómicas valoran mejor aquellos platos que están hechos a su medida.  
 
 2. **Implementación de un pipeline para el preprocesado de textos**
    - Uso de librerías como NLTK y SpaCy para el tokenizado, eliminación de stopwords y lematización.
@@ -25,18 +25,14 @@ Este proyecto se centra en el análisis y la predicción de datos utilizando dif
    - **Embeddings contextuales (BERT)**: Explicación del proceso de obtención de embeddings BERT y cómo se utilizaron para mejorar las representaciones de documentos. Comparación con otros métodos.
 
 4. **Entrenamiento y evaluación de modelos de regresión**
-   - Uso de redes neuronales en PyTorch para el aprendizaje automático.
-   - Implementación de K-NN, SVM y Random Forest en Scikit-learn para comparación.
-   - Evaluación con métricas como RMSE y MAE para determinar la efectividad de los modelos.
+   - Uso de redes neuronales en PyTorch para el aprendizaje automático. En concreto una red neuronal multicapa con normalización y ReLu. El modelo de vectorización se le pedirá al usuario por teclado, para facilitar su uso. 
+   - Implementación de *Random Forest* en Scikit-learn para comparación con el modelo de red neuronal. Se obtienen diferentes resultados. En este caso será el usuario el que deberá cambiar los parámetros, ya que hay implementado un optimizador de hiperparámetros, que escoje los que mejor &R^2& proporciona.
+   - Evaluación con métricas como Loss y &R^2& para determinar la efectividad de los modelos. Así como gráficas para facilitar la comprensión. Se aprecia en los resultados diferentes aspectos, por un lado, que al reducir la base de datos para hacerla más manejable, estamos reduciendo las posibilidades de que nuestro modelo mejore. Esto se ve reflejado en las métricas que tienen peores valores. Sin embargo nos damos cuenta de que BERT consigue mucho mejor resultado que los otros dos modelos de vectorización. Tanto para la red neuronal, como para el Random Forest. 
 
 5. **Comparación de lo obtenido con el fine-tuning de un modelo preentrenado**
    - Uso de Hugging Face para ajustar un modelo transformer con una cabeza de regresión.
    - Comparación de los resultados con las técnicas anteriores y discusión sobre las mejoras obtenidas.
 
 ### Extra
-- **Summarizer**: Implementación de un summarizer para reducir la longitud de los textos de la variable `description`. 
+- **Summarizer**: Implementación de un summarizer para reducir la longitud de los textos de la variable `description`. Hemos tomado una porción pequeña del dataset para poder demostrar su uso. 
 - **Clustering de diferentes variables**: Uso de un algoritmo k-means para agrupar diferentes variables. Análisis de los clusters resultantes y la relevancia de estos para el problema de estudio.
-
-## Instrucciones de Instalación
-```bash
-pip install numpy pandas scikit-learn nltk gensim torch transformers
