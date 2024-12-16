@@ -156,10 +156,57 @@ Para poder analizar los vectores generados por BERT, decidimos calcular la dista
 Por último, los vectores obtenido para el token inicial de cada receta [CLS], sirven como representación de la receta completa. De esta forma, dado que trabajar con una matriz de 2000x768 es mucho más sencillo que trabajar con una de 2000x512x768, optamos por trabajar en los siguientes pasos con los vectores que representan a las recetas completas, y no a los que representan individualmente a cada token de cada receta. De esta forma coginedo solo el vector para el token [CLS] de cada receta, podemos utilizar redes neuronales y regresores con entradas de longitud 768 para cada documento, en lugar de entradas de 512x768 para cada documento.
 
 ## Regresión
+Durante este punto se nos pide que realicemos una tarea de regresión con al menos dos técnicas:
+
+1.   Una red neuronal (implementada con `PyTorch`)
+2.   Un regresor de la biblioteca de `Scikit-learn`. En nuestro caso hemos optado por `Random Forest`
 
 ### Redes Neuronales
 
+En este punto vamos a explicar como hemos implementado el regresor a partir de la red neuronal.
+
+Para empezar, definimos una función para la red neuronal, en el que diferenciamos las diferentes capas, de las que destacamos capas lineales, ReLUs y una de DropOut que ayuda a gestionar y reducir el sobreajuste, desactivando aleatoriamente neuronas de la red.
+En segundo lugar, definimos otra función para entrenar el regresor basado en la red neuronal anteriormente definida.
+
+En esta función podemos hablar que le pasamos por parámetros la X (elegida por el usuario por teclado en tiempo de ejecución) e Y, el numero de épocas, la tasa de aprendizaje y la dimensión de la primera capa oculta de la red.
+
+El regresor funciona de manera normal, dividimos los datos, convertimos a tensores, creamos el modelo y sus diferentes funciones y métricas para conocer su rendimiento. Por último y asingamos variables y imprimimos por pantalla.
+
+En penúltimo lugar, hemos decidido definir diferentes funciones para visualizar la diferencia entre el conjunto de test y el conjunto de entrenamiento en varias métricas. Así podemos comparar mejor el rendimiento del test y del train.
+
+Y por último, para inicializar el modelo basado en la red neuronal, y utilizando la vectorización que mejor consideremos (preguntada al usuario) se procede a la tarea de regresión. Imprimimos las variables cada 50 épocas y las representaciones gráficas.
+
+![NN](GH/td7.png)
+![NNLoss](GH/td7.png)
+![NNR2](GH/td7.png)
+
+Cabe destacar que la función es válida para las diferentes vectorizaciones de texto, de forma que queda un código más depurado y limpio.
+
+De las gráficas podemos sacar diferentes conclusiones:
+
+
+1.   La vectorización BERT es la que mejor ha funcionado de todas, en igualdad de parámetros, sin embargo, los resultados están lejos de ser concluyentes.
+2.   El extracto del dataset utilizado es quizá demasiado pequeño para la tarea, sin embargo al utilizar un extracto más grande, se hace muy largo, temporalmente hablando.
+3. Podemos observar como las perdidas y la $R^2$ de los dos conjuntos están considerablemente cerca, esto es una buena señal, sin embargo el valor final de estas métricas simboliza que no se está haciendo una buena tarea de regresión.
+4. Los valores, aunque lejos de ser los óptimos sí que entran dentro de márgenes aceptables.
+
 ### Otra técnica implementada en la librería Scikit-learn - RandomForest
+
+Como se indica en el enunciado, es necesario implementar otra técnica de la libreria de Scikit-learn. En nuestro caso hemos decidio optar por evaluarlo mediante un regresor de `random_forest`.
+
+En este caso utilizamos el regresor de la biblioteca, y le pasamos por parámetros todos los modelos.
+
+Después de ello, se ha decidido por implementar una función que sirva para optimizar el valor de una métrica, en este caso de R^2.
+
+A diferencia del caso de la red neuronal, el modelo de vectorización lo pasamos por parámetros.
+
+![RF](GH/td7.png)
+
+Tal y como podemos observar, los mejores resultados se obtienen para el modelo de BERT, en comparación con TF-IDF y Word2Vec. También observamos que al igual que con la red neuronal, los resultados son aceptables pero están muy lejos de ser los óptimos.
+
+Los resultados demuestran que la regresión con Random Forest supera a la red neuronal en términos de generalización y estabilidad. Esto se refleja en mejores métricas de desempeño (R², RMSE y MAE) en el conjunto de prueba, donde Random Forest logra un equilibrio más consistente mientras que la red neuronal muestra sobreajuste.
+
+Para esta tarea, Random Forest es más adecuado debido a su desempeño estable y menor complejidad, mientras que las redes neuronales podrían ser útiles con datos más extensos o problemas más complejos.
 
 ## Comparación de lo obtenido en el paso 4 con el fine-tuning de un modelo preentrenado con Hugging Face
 
