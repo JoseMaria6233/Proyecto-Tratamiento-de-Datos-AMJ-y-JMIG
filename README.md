@@ -7,7 +7,7 @@
 - **José María Iranzo González, 100406233**
 
 ## Descripción General
-Este proyecto se centra en el análisis y la predicción de datos utilizando diferentes métodos de representación vectorial y técnicas de modelado para problemas de regresión. Se implementaron diversas técnicas, desde el preprocesamiento de textos hasta el uso de modelos transformer para la predicción de resultados.
+Este proyecto se centra en el análisis y la predicción de datos utilizando diferentes métodos de representación vectorial y técnicas de modelado para problemas de regresión. Se implementaron diversas técnicas, desde el preprocesamiento de textos hasta el uso de modelos transformer para la predicción de resultados. Por parte de los autores, se recomienda el uso de Google Colab como entorno de ejecución ya que ha sido en el cual ha sido desarrollado el trabajo. 
 
 ### Metodología Utilizada
 1. **Análisis de variables de entrada**
