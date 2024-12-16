@@ -42,3 +42,13 @@ Este proyecto se centra en el análisis y la predicción de datos utilizando dif
 
   Los resultados son muy favorables, ya que tenemos los textos resumidos en gran medida y sin perder una gran cantidad de información. Aunque sí es verdad que hay pequeños datos que se pierden como la temperatura en algunos casos. 
 - **Clustering de diferentes variables**: Uso de un algoritmo k-means para agrupar diferentes variables. Análisis de los clusters resultantes y la relevancia de estos para el problema de estudio.
+- 
+## Preparación de datos e importación de bibliotecas
+
+El primer paso de nuestro proyecto es la importación de todas las librerías necesarias así como la descarga del dataset del fichero `full_format_recipes.json`. Para llevar a cabo el análisis y la implementación del proyecto, se utilizarán diversas librerías de Python, cada una con un rol específico en el proceso. Desde las herramientas para el preprocesamiento de texto como NLTK y SpaCy, hasta las librerías de modelado y representación vectorial como Gensim, PyTorch y Hugging Face.
+
+Una vez descargado el dataset, podemos observar como contamos con cerca de 20,000 recetas. Sin embargo, a la hora de trabajar con los datos, nos dimos cuenta de que había filas enteras del dataset que estaban vacias (todos los valores eran NaN), por lo que decidimos eliminarlos. Por otro lado, trabajar con 20,000 recetas era computacionalmente muy costoso, por lo que se decidió reducir el dataset a 2,000 recetas para que fuera más manejable a la hora de entrenar las redes neuronales y los regresores a partir del paso 4.
+
+## Análisis de las variables de entrada
+
+En primer lugar, decidimos obtener un contador de cuantas veces aparecía cada categoría, para así poder tener esto en cuenta a la hora de analizar los datos. El análisis que decidimos analizar fue como la media de la variable 'rating' variaba en función de la categoría de la receta, pudiendo así observar que categorías son puntuadas mejor que otras. Ordenando las categorías que obtenían una mejor puntuación, obtenemos los siguientes resultados:
